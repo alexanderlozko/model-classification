@@ -1,0 +1,5 @@
+pickle = 'data/dataframe.pkl'
+pickle1 = '../data/dataframe.pkl'
+pickle2 = '../data/category_with_received_data.csv'
+rcsv = '../data/category.csv'
+rcsv2 = 'data/data.csv'

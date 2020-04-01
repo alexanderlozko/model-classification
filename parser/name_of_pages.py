@@ -1,0 +1,8 @@
+banks_url = 'https://minfin.com.ua'
+pos_url = 'https://about.pumb.ua/ru/support/testimonials'
+reviews_page = 'review/'
+hotlines_page = 'hotline/'
+file_name = '../data/labeled.csv'
+offers_page_1 = 'https://stbank.by/about_the_bank/rate_this_job/new_idea/?PAGEN_1='
+offers_page_2 = 'https://kapital.kz/business/38370/8-idey-dlya-bankov.html'
+offers_page_3 = 'https://mtp-global.com/top10-sovetov-kak-uluchchit-obslujivanie-klientov/'
