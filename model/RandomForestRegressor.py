@@ -82,12 +82,9 @@ for i in range(n):
     if predicted_label in dict_ans:
         predicted_label = dict_ans[predicted_label]
 
-    #NBU DATA
-    if cat_code[i] in dict_ans:
-        cat = dict_ans[cat_code[i]]
     #OUR DATA
-    # if list(y_test[i]).index(1) in dict_ans:
-    #     cat = dict_ans[list(y_test[i]).index(1)]
+    if list(y_test[i]).index(1) in dict_ans:
+        cat = dict_ans[list(y_test[i]).index(1)]
 
     if cat == predicted_label:
         match += 1

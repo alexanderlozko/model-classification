@@ -11,10 +11,10 @@ from keras.preprocessing import sequence
 import cleaner.TextCleaner as tc
 import preparer.TextPreparer as tp
 import way
-from model.Model_new import ModelFile
+from model.Model import ModelFile, ModelSingle
 
 
-class ModelInterface:
+class ModelInterface(ModelFile, ModelSingle):
     """
     Calls up functions depending on the user choosing a button on the initial window
     """
@@ -83,44 +83,12 @@ class ModelInterface:
                 elif var.get() == 5:
                     category = 'SiteAndCoins'
 
-                text_list = list()
-                for x in range(6):
-                    text_list.append(text)
-
-                model = load_model('../model/save/model(our test data).h5')
-                df = pd.DataFrame({'text': text_list})
-                X_train = df.text
-                cat = '../data/category_with_received_data.csv'
-                all = pd.read_csv(cat)
-                cat = tc.CleanText.clean_category(all)
-                descriptions = tc.CleanText.prepare_text(all).description
-                maxSequenceLength, vocab_size, encoder, num_classes = tp.PrepareText.parameters(cat)
-                tokenizer = Tokenizer(num_words=vocab_size)
-                tokenizer.fit_on_texts(descriptions)
-                X_train = tokenizer.texts_to_sequences(X_train)
-                X_train = sequence.pad_sequences(X_train, maxlen=maxSequenceLength)
-
-                cat = '../data/category_with_received_data.csv'
-                with open(cat, 'a') as f:
-                    f.write('"{}",{}\n'.format(text, category))
-
-                # y_train = keras.utils.to_categorical(y_train, num_classes)
-                dict_changes = {
-                    'Positive': np.array([1., 0., 0., 0., 0., 0.]),
-                    'Negative': np.array([0., 1., 0., 0., 0., 0.]),
-                    'Hotline': np.array([0., 0., 1., 0., 0., 0.]),
-                    'Hooligan': np.array([0., 0., 0., 1., 0., 0.]),
-                    'Offer': np.array([0., 0., 0., 0., 1., 0.]),
-                    'SiteAndCoins': np.array([0., 0., 0., 0., 0., 1.]),
-                }
-                y_train = []
-                for x in range(6):
-                    y_train.append(dict_changes[category])
-
-                model.fit(X_train, np.array(y_train), batch_size=1,
-                          epochs=1)
-
-
+                model_class = ModelSingle(text=text, category=category, model='../model/save/model(nbu test data with answ).h5',
+                                        way_study='../data/category_with_received_data.csv', batch_size=64, epochs=1, vocab_size=None)
+                model_class.read()
+                model_class.clean_and_prapare()
+                model_class.data_to_vect()
+                model_class.train()
 
             choose_button = tk.Button(choose, text='Підтвердити', command=learn)
 
@@ -144,33 +112,13 @@ class ModelInterface:
                 messagebox.showerror('Помилка', 'Введіть текст звернення')
 
             else:
-                text_list = list()
-                for x in range(6):
-                    text_list.append(text)
-                model = load_model('../model/save/model(our test data).h5')
-                df = pd.DataFrame({'text': text_list})
-                X_train = df.text
-                cat = '../data/category_with_received_data.csv'
-                all = pd.read_csv(cat)
+                model_class = ModelSingle(model='../model/save/model(nbu test data with answ).h5', text=text, category=None,
+                                        way_study='../data/category_with_received_data.csv', batch_size=64, epochs=1, vocab_size=None)
+                model_class.read()
+                model_class.clean_and_prapare()
+                model_class.data_to_vect()
+                predicted_label = model_class.predict()
 
-                cat = tc.CleanText.clean_category(all)
-                descriptions = tc.CleanText.prepare_text(all).description
-
-                maxSequenceLength, vocab_size, encoder, num_classes = tp.PrepareText.parameters(cat)
-
-                tokenizer = Tokenizer(num_words=vocab_size)
-                tokenizer.fit_on_texts(descriptions)
-
-                X_train = tokenizer.texts_to_sequences(X_train)
-
-                X_train = sequence.pad_sequences(X_train, maxlen=maxSequenceLength)
-
-                model.predict(X_train)
-
-                text_labels = encoder.classes_
-
-                prediction = model.predict([X_train])
-                predicted_label = text_labels[np.argmax(prediction)]
                 dict_ans = {
                     0: 'Positive',
                     1: 'Negative',
