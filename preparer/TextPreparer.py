@@ -130,6 +130,7 @@ class PrepareText:
 
         print(u'Преобразуем категории в матрицу двоичных чисел '
               u'(для использования categorical_crossentropy)')
+
         y_train = keras.utils.to_categorical(y_train, num_classes)
         y_test = keras.utils.to_categorical(y_test, num_classes)
         print('y_train shape:', y_train.shape)
@@ -137,47 +138,3 @@ class PrepareText:
 
         return X_train, X_test, y_train, y_test
 
-    @staticmethod
-    def parameters(df, train_test_split=0.8):
-        """
-        Combines several function
-
-        :param df: DataFrame
-        :param train_test_split: Number to split training data
-        :return: Function values
-        """
-
-        categories = df.category_code
-        descriptions = df.description
-
-        tokenizer, textSequences = PrepareText.tokenizer(descriptions)
-        X_train, y_train, X_test, y_test = PrepareText.load_data_from_arrays(descriptions, categories, train_test_split)
-
-        total_unique_words, maxSequenceLength = PrepareText.max_count(descriptions, tokenizer)
-        vocab_size = round(total_unique_words / 10)
-
-        encoder, num_classes = PrepareText.num_classes(y_train, y_test)
-
-        return maxSequenceLength, vocab_size, encoder, num_classes
-
-    @staticmethod
-    def change_cat(category):
-        """
-        Turns names of categories into numbers
-
-        :param category: Names of category
-        :return: Number of category
-        """
-
-        if category == 'Positive':
-            return 0
-        elif category == 'Negative':
-            return 1
-        elif category == 'Hotline':
-            return 2
-        elif category == 'Hooligan':
-            return 3
-        elif category == 'Offer':
-            return 4
-        elif category == 'SiteAndCoins':
-            return 5

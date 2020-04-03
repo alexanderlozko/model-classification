@@ -3,14 +3,6 @@ from tkinter import messagebox
 from tkinter.ttk import Radiobutton
 from tkinter import filedialog as fd
 from PIL import Image, ImageTk
-import pandas as pd
-import numpy as np
-from keras.models import load_model
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing import sequence
-import cleaner.TextCleaner as tc
-import preparer.TextPreparer as tp
-import way
 from model.Model import ModelFile, ModelSingle
 
 
@@ -196,7 +188,7 @@ class ModelInterface(ModelFile, ModelSingle):
                                                 'Ми продовжимо навчання моделі на даних з файлу')
                     window.destroy()
 
-                    model_class = ModelFile('../model/save/model(nbu test data with answ).h5', file_name, '../data/category_with_received_data.csv', 64, 1)
+                    model_class = ModelFile(model='../model/save/model(nbu test data with answ).h5', way=file_name, way_study='../data/category_with_received_data.csv', batch_size=64, epochs=1, vocab_size = None)
                     model_class.read()
                     model_class.clean_and_prapare()
                     total_unique_words = model_class.data_to_vect()

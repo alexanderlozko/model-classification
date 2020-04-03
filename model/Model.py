@@ -29,6 +29,7 @@ class Model(ABC):
     def data_to_vect(self):
         pass
 
+
 class ModelFile(Model, CleanText, PrepareText):
 
     def __init__(self, way, model, way_study, batch_size, epochs, vocab_size):
@@ -82,7 +83,6 @@ class ModelFile(Model, CleanText, PrepareText):
     def train_model(self):
         self.model = load_model(self.model)
         print('Тренируем модель...')
-        print(self.X_train, self.y_train)
         self.history = self.model.fit(self.X_train, self.y_train,
                   batch_size=self.batch_size,
                   epochs=self.epochs)
@@ -162,3 +162,5 @@ class ModelSingle(Model, CleanText, PrepareText):
         self.model.fit(self.X_train, np.array(y_train), batch_size=1,
                   epochs=1)
         self.model.save('../model/save/model_new.h5')
+
+

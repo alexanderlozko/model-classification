@@ -27,7 +27,7 @@ n = len(y_test_n)
 total_unique_words, maxSequenceLength = tp.PrepareText.max_count(descriptions, tokenizer)
 vocab_size = round(total_unique_words/10)
 
-encoder, num_classes = tp.PrepareText.num_classes(y_train, y_test)
+encoder, num_classes = tp.PrepareText.num_classes(y_train)
 
 X_train, X_test, y_train, y_test = tp.PrepareText.transform_sets(vocab_size, descriptions ,X_train, X_test, y_train, y_test, maxSequenceLength, num_classes)
 
