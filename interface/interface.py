@@ -5,6 +5,13 @@ from tkinter import filedialog as fd
 from PIL import Image, ImageTk
 from model.Model import ModelFile, ModelSingle
 
+class CustomExspression(Exception):
+       def __init___(self,dErrorArguments):
+            Exception.__init__(self, 'Некорректные данные')
+            self.dErrorArguments = dErrorArguments
+            messagebox.showerror('Помилка', 'Введіть текст звернення')
+            pass
+
 
 class ModelInterface(ModelFile, ModelSingle):
     """
@@ -22,7 +29,7 @@ class ModelInterface(ModelFile, ModelSingle):
                                                 '(лише українською або російською мовою)\n'
                                                 'класификація може зайняти декілька хвилин')
         window.title('Визначення категорії')
-        window.geometry('450x400+{}+{}'.format(w, h))
+        window.geometry('450x550+{}+{}'.format(w, h))
         user_message = tk.Text(window)
         define = tk.Button(window, text='Визначити категорію')
         input_field = tk.Label(window, bg='white', fg='black')

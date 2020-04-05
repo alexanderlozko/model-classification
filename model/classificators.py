@@ -9,6 +9,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from cleaner.TextCleaner import CleanText
 from preparer.TextPreparer import PrepareText
 
+
 class Model(ABC):
 
     def __init__(self,  way_study):
