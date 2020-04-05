@@ -22,6 +22,7 @@ class ModelInterface(ModelFile, ModelSingle):
                                                 '(лише українською або російською мовою)\n'
                                                 'класификація може зайняти декілька хвилин')
         window.title('Визначення категорії')
+        window.geometry('450x400+{}+{}'.format(w, h))
         user_message = tk.Text(window)
         define = tk.Button(window, text='Визначити категорію')
         input_field = tk.Label(window, bg='white', fg='black')
@@ -98,9 +99,11 @@ class ModelInterface(ModelFile, ModelSingle):
             """
             Defining the category of the entered message
             """
-
-            text = user_message.get('1.0', 'end-1c')
-            if text == '':
+            try:
+                text = user_message.get('1.0', 'end-1c')
+                if text == '':
+                    raise CustomExspression
+            except CustomExspression:
                 messagebox.showerror('Помилка', 'Введіть текст звернення')
 
             else:
@@ -158,6 +161,7 @@ class ModelInterface(ModelFile, ModelSingle):
 
         window = tk.Toplevel(root)
         window.title('Продовження навчання моделі')
+        window.geometry('450x400+{}+{}'.format(w, h))
         program_message = tk.Label(window, text='Оберіть файл', font=("Arial Bold", 14))
         program_message1 = tk.Label(window, text='Файл повинен бути формату .csv '
                                                  'та містити дані, збережені наступним чином:', font=("Arial Bold", 12))
@@ -189,12 +193,16 @@ class ModelInterface(ModelFile, ModelSingle):
                     window.destroy()
 
                     model_class = ModelFile(model='../model/save/model(nbu test data with answ).h5', way=file_name, way_study='../data/category_with_received_data.csv', batch_size=64, epochs=1, vocab_size = None)
-                    model_class.read()
-                    model_class.clean_and_prapare()
-                    total_unique_words = model_class.data_to_vect()
-                    model_class.vocab_size = total_unique_words
-                    model_class.data_final()
-                    model_class.train_model()
+                    try:
+                        model_class.read()
+                        model_class.clean_and_prapare()
+                        total_unique_words = model_class.data_to_vect()
+                        model_class.vocab_size = total_unique_words
+                        model_class.data_final()
+                        model_class.train_model()
+                    except:
+                        messagebox.showinfo(message='На жаль, ми не змогли продовжити навчання моделі на даних з цього файлу')
+
 
                 learn_button = tk.Button(window, text='Продовжити навчання моделі', command=file_learn)
                 print_file_name.grid()
@@ -214,12 +222,12 @@ w = w//2
 h = h//2
 w = w - 200
 h = h - 200
-root.geometry('400x200+{}+{}'.format(w, h))
+root.geometry('400x100+{}+{}'.format(w, h))
 root.title('Класифікатор звернень громадян')
 
 program_message = tk.Label(root, text='Ви знаходитесь в класификаторі звернень громадян', font=('Arial Bold', 14))
-define_category = tk.Button(root, text='Визначити категорію', command=ModelInterface.create_window)
-continue_training = tk.Button(root, text="Продовжити навчання моделі", command=ModelInterface.create_file_window)
+define_category = tk.Button(root, text='   Визначити категорію    ', command=ModelInterface.create_window)
+continue_training = tk.Button(root, text='Продовжити навчання моделі', command=ModelInterface.create_file_window)
 
 program_message.pack()
 define_category.pack()
