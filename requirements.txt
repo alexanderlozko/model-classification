@@ -82,7 +82,7 @@ tox==3.14.5
 translate==3.5.0
 translator==0.0.9
 typed-ast==1.4.1
-urllib3==1.25.8
+urllib3==1.26.5
 virtualenv==20.0.10
 Werkzeug==1.0.0
 wrapt==1.11.2
