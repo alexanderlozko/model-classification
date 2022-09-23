@@ -50,7 +50,7 @@ Pillow==7.0.0
 plantuml==0.3.0
 pluggy==0.13.1
 pre-commit==2.2.0
-protobuf==3.11.4
+protobuf==3.18.3
 py==1.8.1
 pycld2==0.41
 pycparser==2.19
